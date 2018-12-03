@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +23,7 @@ public class CartController{
     @Autowired
     ICartRepository cartRepository;
 
-    @GetMapping("/addItem/{username}")
+    @RequestMapping(value = "/addItem/{username}", method=RequestMethod.POST)
     @ResponseBody
     public String addItem(@RequestBody Item item, @PathVariable String username) {
         Cart cart = cartRepository.findByUsername(username);
