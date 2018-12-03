@@ -23,7 +23,7 @@ public class CartController{
 
     @PostMapping(value = "/addItem/{username}")
     @ResponseBody
-    public String addItem(@RequestBody Item item, @PathVariable String username) {
+    public String addItem(Item item, @PathVariable String username) {
         Cart cart = cartRepository.findByUsername(username);
 
         HashMap<String, Item> items = cart.getItems();
