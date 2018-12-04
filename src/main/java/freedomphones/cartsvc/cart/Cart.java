@@ -28,9 +28,6 @@ public class Cart{
     public HashMap<String, Item> getItems(){
         return this.items;
     }
-    public void deleteItem(String prod_id){
-
-    }
     public void setItems(HashMap<String, Item> items){
         this.items = items;
     }

@@ -1,7 +1,10 @@
 package freedomphones.cartsvc;
 
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import freedomphones.cartsvc.cart.Cart;
 import freedomphones.cartsvc.cart.Item;
@@ -44,7 +48,17 @@ public class CartController{
         return new String("Success");
     }
     @GetMapping("getCart/{username}")
-    public Cart getCartByUsername(@PathVariable String username){
-        return cartRepository.findByUsername(username);
+    public List<String> getCartByUsername(@PathVariable String username){
+        Cart cart = cartRepository.findByUsername(username);
+        List<String> json = Collections.emptyList();
+        HashMap<String, Item> items = cart.getItems();
+        for(String prod_id:items.keySet()){
+            final String uri = "https://freedomphones-zuul-svc.herokuapp.com/phone-service/findById/{id}";
+            RestTemplate restTemplate = new RestTemplate();
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("id", prod_id);
+            json.add(restTemplate.getForObject(uri, String.class, params));
+        }
+        return json;
     }
 }
