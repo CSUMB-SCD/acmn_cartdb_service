@@ -48,16 +48,20 @@ public class CartController{
         return new String("Success");
     }
     @GetMapping("getCart/{username}")
-    public List<String> getCartByUsername(@PathVariable String username){
+    public HashMap<String, HashMap<String, String>> getCartByUsername(@PathVariable String username){
         Cart cart = cartRepository.findByUsername(username);
-        List<String> json = Collections.emptyList();
+        HashMap<String, HashMap<String, String>> json = new HashMap<String, HashMap<String, String>>();
         HashMap<String, Item> items = cart.getItems();
-        for(String prod_id:items.keySet()){
+        for(Map.Entry<String, Item> entry: items.entrySet()){
             final String uri = "https://freedomphones-zuul-svc.herokuapp.com/phone-service/findById/{id}";
             RestTemplate restTemplate = new RestTemplate();
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("id", prod_id);
-            json.add(restTemplate.getForObject(uri, String.class, params));
+            Item item = entry.getValue();
+            HashMap<String, String> params = new HashMap<String, String>();
+            HashMap<String, String> item_response = new HashMap<String, String>();
+            params.put("id", item.getProduct());
+            item_response.put("product", restTemplate.getForObject(uri, String.class, params));
+            item_response.put("qty", item.getQuantity().toString());
+            json.put(item.getProduct(), item_response);
         }
         return json;
     }
