@@ -21,7 +21,7 @@ public class CartController{
     @Autowired
     ICartRepository cartRepository;
 
-    @PostMapping(value = "/addItem/{username}")
+    @PostMapping(value = "/addItem/{username}", produces="application/json")
     @ResponseBody
     public String addItem(@RequestBody Item item, @PathVariable String username) {
         Cart cart = cartRepository.findByUsername(username);
@@ -33,7 +33,7 @@ public class CartController{
         cartRepository.save(cart);
         return new String("Success");
     }
-    @GetMapping("/deleteItem/{username}/{prod_id}")
+    @GetMapping(value = "/deleteItem/{username}/{prod_id}", produces = "application/json")
     @ResponseBody
     public String deleteItem(@PathVariable String username, @PathVariable String prod_id) {
         Cart cart = cartRepository.findByUsername(username);
@@ -43,7 +43,7 @@ public class CartController{
         cartRepository.save(cart);
         return new String("Success");
     }
-    @GetMapping("getCart/{username}")
+    @GetMapping(value="getCart/{username}", produces="application/json")
     public Cart  getCartByUsername(@PathVariable String username){
         Cart cart = cartRepository.findByUsername(username);
         return cart;
