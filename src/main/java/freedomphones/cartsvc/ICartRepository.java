@@ -8,6 +8,6 @@ import freedomphones.cartsvc.cart.Cart;
 
 @Repository
 public interface ICartRepository extends MongoRepository<Cart, String>{
-    @Query(value = "{'username.username':?0}")
+    @Query(value = "{'username':?0}")
     Cart findByUsername(String username);
 }

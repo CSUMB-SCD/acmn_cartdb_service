@@ -27,7 +27,15 @@ public class CartController{
         Cart cart = cartRepository.findByUsername(username);
 
         HashMap<String, Item> items = cart.getItems();
-        items.put(item.getProduct(), item);
+        String product = item.getProduct();
+        if(items.containsKey(product)){
+            Item updated_item = items.get(product);
+            updated_item.setQuantity(updated_item.getQuantity() + item.getQuantity());
+            items.put(product, updated_item);
+        }
+        else{
+            items.put(product, item);
+        }
         cart.setItems(items);
 
         cartRepository.save(cart);
@@ -44,8 +52,16 @@ public class CartController{
         return new String("Success");
     }
     @GetMapping(value="getCart/{username}", produces="application/json")
-    public Cart  getCartByUsername(@PathVariable String username){
+    public Cart getCartByUsername(@PathVariable String username){
         Cart cart = cartRepository.findByUsername(username);
         return cart;
+    }
+    @GetMapping(value="/clearCart/{username}", produces="application/json")
+    public String clearCart(@PathVariable String username){
+        Cart cart = cartRepository.findByUsername(username);
+        HashMap<String, Item> items = new HashMap<String, Item>();
+        cart.setItems(items);
+        cartRepository.save(cart);
+        return "Success";
     }
 }
