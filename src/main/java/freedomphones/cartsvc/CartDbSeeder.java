@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import freedomphones.cartsvc.cart.Cart;
 import freedomphones.cartsvc.cart.Item;
-import freedomphones.cartsvc.cart.Username;
 
 @Component
 public class CartDbSeeder implements CommandLineRunner{
@@ -20,7 +19,7 @@ public class CartDbSeeder implements CommandLineRunner{
 
     @Override
     public void run(String... args) throws Exception {
-        Cart user = new Cart(new Username("user"), new HashMap<String, Item>());
+        Cart user = new Cart("user", new HashMap<String, Item>());
         cartRepository.deleteAll();
         List<Cart> carts = Arrays.asList(user);
         cartRepository.saveAll(carts);

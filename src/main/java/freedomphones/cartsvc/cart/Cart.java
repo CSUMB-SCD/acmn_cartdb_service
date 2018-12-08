@@ -9,20 +9,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Cart{
     @Id
     private String id;
-    private Username username;
+    private String username;
     private HashMap<String, Item> items;
 
-    public Cart(Username username, HashMap<String, Item> items) {
+    public Cart(String username, HashMap<String, Item> items) {
         this.username = username;
         this.items = items;
     }
     public String getId(){
         return this.id;
     }
-    public Username getUsername(){
+    public String getUsername(){
         return this.username;
     }
-    public void setUsername(Username username){
+    public void setUsername(String username){
         this.username = username;
     }
     public HashMap<String, Item> getItems(){
